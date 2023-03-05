@@ -1,11 +1,65 @@
 <!-- 单点监控页面 -->
 <template>
-  单点监控页面
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="指标查询" name="data">
+      <div class="header-search">
+        <el-input style="width: 90%" v-model="input" placeholder="请输出查询的微服务名称" clearable />
+        <el-button type="primary" @click="headerSearch">查询</el-button>
+      </div>
+      <div class="show-data">
+        <el-table :data="monitorData" style="width: 100%">
+          <el-table-column prop="id" label="ID"/>
+          <el-table-column prop="ms_name" label="微服务名" />
+          <el-table-column prop="CPU_usage" label="CPU系统态利用率" />
+          <el-table-column prop="CPU_user" label="CPU用户态利用率" />
+          <el-table-column prop="memory_bandwidth_usage" label="内存带宽占用率" />
+          <el-table-column prop="memory_usage" label="内存使用量" />
+          <el-table-column prop="disk_write" label="磁盘写入带宽占用率" />
+          <el-table-column prop="disk_read" label="磁盘读取带宽占用率" />
+          <el-table-column prop="net_write" label="网络写入带宽占用率" />
+          <el-table-column prop="net_read" label="网络读取带宽占用率" />
+        </el-table>
+      </div>
+    </el-tab-pane>
+    <el-tab-pane label="Graph展示" name="graph">Graph展示</el-tab-pane>
+  </el-tabs>
 </template>
 
-<script>
-</script>
+<script lang="ts" setup>
+import {onMounted, ref, reactive} from 'vue'
+import type { TabsPaneContext } from 'element-plus'
+import prom from '@/api/prometheus_api'
 
-<style scoped>
+// tabs标签
+const activeName = ref('data')
+const handleClick = (tab: TabsPaneContext, event: Event) => {
+  console.log(tab, event)
+}
+
+// 监控到的指标数据
+const monitorData: any = reactive([])
+onMounted(() => {
+  prom.showAll().then(res => {
+    for (const item of res.list) {
+      monitorData.push(item.fields)
+    }
+  })
+})
+// 搜索输入框
+const input = ref("")
+function headerSearch() {
+  prom.searchByMsName(input.value).then(res => {
+    console.log(input.value, res)
+  })
+
+}
+</script>
+<style>
+  .header-search {
+    display: inline-flex;
+    padding: 10px;
+    width: 95%;
+    justify-content: space-between;
+  }
 
 </style>
