@@ -4,33 +4,45 @@ import service from './axios'
 
 const prometheus = {
     methods: {
-        async showAll() {
+        // 单点监控
+        async showAllSingleMonitor() {
             try {
                 const config: AxiosRequestConfig = {
                     params: {}
                 }
-                const response = await service.get('show_mss/', config)
+                const response = await service.get('show_single_mss/', config)
                 return response.data
-                // console.log(response.data)
             } catch (error) {
                 console.error(error)
             }
         },
 
-        async searchByMsName(ms_name: String) {
+        async singleMonitor() {
             try {
                 const config: AxiosRequestConfig = {
-                    params: {
-                        ms_name,
-                    }
+                    params: {}
                 }
-                const response = await service.get('search_by_name/', config)
+                const response = await service.get('single_monitor/', config)
                 return response.data
-                // console.log(response.data)
             } catch (error) {
                 console.error(error)
             }
-        }
+        },
+
+        // 持续监控
+        async showAllContinueMonitor(form: object) {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {
+                        form
+                    }
+                }
+                const response = await service.get('show_continue_mss/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
     }
 }
 

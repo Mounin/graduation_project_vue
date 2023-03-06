@@ -87,14 +87,6 @@ import ContinuousMonitor from '../components/continuousMonitor.vue'
 import DrawPath from '../components/DrawPath.vue'
 import ResourceMonitor from '../components/ResourceMonitor.vue'
 
-// 表格数据
-const item = {
-  date: '2016-05-02',
-  name: 'Tom',
-  address: 'No. 189, Grove St, Los Angeles',
-}
-const tableData = ref(Array.from({ length: 20 }).fill(item))
-
 // 侧边栏选项卡
 let showContent = ref("singlePointMonitor")
 function singlePointMonitor() {
