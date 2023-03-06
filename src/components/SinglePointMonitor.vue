@@ -4,10 +4,10 @@
     <el-tab-pane label="指标查询" name="data">
       <div class="header-search">
         <el-input style="width: 90%" v-model="input" placeholder="请输出查询的微服务名称" clearable />
-        <el-button type="primary" @click="headerSearch">查询</el-button>
+        <el-button type="primary" @click="headerMonitor">监控</el-button>
       </div>
       <div class="show-data">
-        <el-table :data="monitorData" style="width: 100%">
+        <el-table :data="filteredDataList" style="width: 100%">
           <el-table-column prop="id" label="ID"/>
           <el-table-column prop="ms_name" label="微服务名" />
           <el-table-column prop="CPU_usage" label="CPU系统态利用率" />
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref, reactive} from 'vue'
+import {onMounted, ref, reactive, computed} from 'vue'
 import type { TabsPaneContext } from 'element-plus'
 import prom from '@/api/prometheus_api'
 
@@ -37,21 +37,28 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 
 // 监控到的指标数据
-const monitorData: any = reactive([])
+let showData = ref([])
+const dataList = ref([])
+const monitorData: any[] = reactive([])
 onMounted(() => {
   prom.showAll().then(res => {
     for (const item of res.list) {
       monitorData.push(item.fields)
     }
+    dataList.value = JSON.parse(JSON.stringify(monitorData))
+    showData = dataList
   })
 })
+
 // 搜索输入框
 const input = ref("")
-function headerSearch() {
-  prom.searchByMsName(input.value).then(res => {
-    console.log(input.value, res)
-  })
+const filteredDataList = computed(() => {
+  if (!input.value) return dataList.value
+  return dataList.value.filter((item: any) => item.ms_name.includes(input.value))
+})
 
+//  点击开始监控
+function headerMonitor() {
 }
 </script>
 <style>
