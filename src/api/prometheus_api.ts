@@ -4,6 +4,18 @@ import service from './axios'
 
 const prometheus = {
     methods: {
+        // 测试接口
+        async testAll() {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {}
+                }
+                const response = await service.get('test/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
         // 单点监控
         async showAllSingleMonitor() {
             try {

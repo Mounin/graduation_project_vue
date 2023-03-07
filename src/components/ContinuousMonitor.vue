@@ -32,9 +32,7 @@
           <el-table-column prop="disk_read" label="磁盘读取带宽占用率" />
           <el-table-column prop="net_write" label="网络写入带宽占用率" />
           <el-table-column prop="net_read" label="网络读取带宽占用率" />
-          <el-table-column prop="start_time" label="开始时间" />
-          <el-table-column prop="end_time" label="结束时间" />
-          <el-table-column prop="duration" label="持续时间" />
+          <el-table-column prop="start_time" label="监控时间" />
         </el-table>
       </div>
     </el-tab-pane>
@@ -45,9 +43,10 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref, reactive, computed} from 'vue'
+import {ref, reactive} from 'vue'
 import type { TabsPaneContext } from 'element-plus'
 import prom from '@/api/prometheus_api'
+import {ElMessage} from "element-plus";
 
 // tabs标签
 const activeName = ref('data')
@@ -56,32 +55,32 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 
 // 监控到的指标数据
-const dataList = ref([])
+let dataList = ref([])
 const monitorData: any[] = reactive([])
-onMounted(() => {
-  // getAllData()
-})
-// 获取所有数据
-// function getAllData() {
-//   prom.showAllContinueMonitor().then(res => {
-//     for (const item of res.list) {
-//       monitorData.push(item.fields)
-//     }
-//     dataList.value = JSON.parse(JSON.stringify(monitorData))
-//   })
-// }
 
 // 搜索输入框
 const form = reactive({
   name: '',
   start_end: ref<[Date, Date]>([
-    new Date(2023, 1, 1, 0, 0),
-    new Date(2023, 1, 1, 0, 0),
+    new Date(),
+    new Date(),
   ])
 })
 const onSubmit = () => {
   prom.showAllContinueMonitor(form).then(res => {
     console.log(res)
+    dataList = ref([])
+    for (const item of res.list) {
+      monitorData.push(item.fields)
+    }
+    dataList.value = JSON.parse(JSON.stringify(monitorData))
+    ElMessage({
+      message: '请求成功！',
+      type: 'success',
+    })
+  }).catch(e => {
+    console.error("出错啦", e)
+    ElMessage.error('请求失败，请稍后重试。')
   })
 }
 </script>
@@ -93,5 +92,4 @@ const onSubmit = () => {
   width: 95%;
   justify-content: space-between;
 }
-
 </style>

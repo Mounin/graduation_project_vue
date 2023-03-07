@@ -83,7 +83,7 @@
 import { ref } from 'vue'
 import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
 import SinglePointMonitor from '../components/SinglePointMonitor.vue'
-import ContinuousMonitor from '../components/continuousMonitor.vue'
+import ContinuousMonitor from '../components/ContinuousMonitor.vue'
 import DrawPath from '../components/DrawPath.vue'
 import ResourceMonitor from '../components/ResourceMonitor.vue'
 
