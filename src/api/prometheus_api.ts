@@ -55,6 +55,18 @@ const prometheus = {
                 console.error(error)
             }
         },
+
+        async showGraphContinueMonitor() {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {}
+                }
+                const response = await service.get('show_graph_continue_mss/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
     }
 }
 

@@ -37,22 +37,21 @@
       </div>
     </el-tab-pane>
     <el-tab-pane label="Graph展示" name="graph">
-      Graph展示
+      <PromContinueChart />
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script lang="ts" setup>
-import {ref, reactive} from 'vue'
+import {ref, reactive, onMounted} from 'vue'
 import type { TabsPaneContext } from 'element-plus'
 import prom from '@/api/prometheus_api'
-import {ElMessage} from "element-plus";
+import {ElMessage} from "element-plus"
+import * as echarts from 'echarts'
+import PromContinueChart from './PromContinueChart.vue'
 
 // tabs标签
 const activeName = ref('data')
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
-}
 
 // 监控到的指标数据
 let dataList = ref([])
@@ -83,6 +82,12 @@ const onSubmit = () => {
     ElMessage.error('请求失败，请稍后重试。')
   })
 }
+
+// graph图表展示
+const handleClick = (tab: TabsPaneContext, event: Event) => {
+  console.log(tab, event)
+}
+
 </script>
 
 <style>
