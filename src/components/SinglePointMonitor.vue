@@ -20,9 +20,9 @@
         </el-table>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="Graph展示" name="graph">
-      Graph展示
-    </el-tab-pane>
+<!--    <el-tab-pane label="Graph展示" name="graph">-->
+<!--      Graph展示-->
+<!--    </el-tab-pane>-->
   </el-tabs>
 </template>
 

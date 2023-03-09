@@ -4,8 +4,8 @@ import { RouterView } from 'vue-router'
 
 <template>
   <RouterView />
-  <el-config-provider size="small" z-index="3000">
-  </el-config-provider>
+<!--  <el-config-provider size="small" z-index="3000">-->
+<!--  </el-config-provider>-->
 </template>
 
 <style scoped>
