@@ -30,7 +30,11 @@
         <el-input v-model="traceID" style="width: 90%" placeholder="请输入trace id" clearable />
         <el-button type="primary" @click="searchGraph">查询</el-button>
       </div>
-      <div id="graph"></div>
+      <div class="route_graph">
+        <div id="graph"></div>
+        <div id="critical_path"></div>
+      </div>
+
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -50,78 +54,95 @@ onMounted(() => {
 const traceID = ref()
 const searchGraph = () => {
   jaeger.draw_path(traceID.value).then(res => {
-    console.log("draw path", JSON.parse(res.graph_data))
     const graph_data = JSON.parse(res.graph_data)
+    const critical_data = JSON.parse(res.critical_data)
+    console.log("graph_data", graph_data)
+    console.log("critical_data", critical_data)
 
-    type EChartsOption = echarts.EChartsOption
+    draw_path(graph_data, 'graph', "微服务路径DAG图")
+    draw_path(critical_data, 'critical_path', "关键路径")
 
-    const chartDom = document.getElementById('graph')!
-    const myChart = echarts.init(chartDom)
-    let option: EChartsOption;
-    interface GraphNode {
-      symbolSize: number;
-      label?: {
-        show?: boolean;
-      };
-    }
-    graph_data.nodes.forEach(function (node: GraphNode) {
-      node.label = {
-        show: node.symbolSize >= 20
-      };
-    });
-    option = {
-      title: {
-        text: "My Graph",
-        subtext: 'Default layout',
-        top: 'top',
-        left: 'right'
-      },
-      tooltip: {
-        trigger: "item",
-        triggerOn: "mousemove",
-      },
-      legend: [
-        {
-          // selectedMode: 'single',
-          data: graph_data.categories.map(function (a: { name: string }) {
-            return a.name;
-          })
-        }
-      ],
-      series: [
-        {
-          type: "graph",
-          layout: "force",
-          data: graph_data.nodes,
-          links: graph_data.links,
-          categories: graph_data.categories,
-          roam: true,
-          edgeSymbol: ['none', 'arrow'],
-          edgeSymbolSize: [0, 10],
-          // 是否显示node的label
-          label: {
-            // show: true,
-            formatter: '{b}'
-          },
-          force: {
-            repulsion: 100,
-            edgeLength: 50,
-          },
-          lineStyle: {
-            color: 'source',
-            curveness: 0.3,
-            width: 3,
-          },
-          // 是否显示边label
-          // edgeLabel: {
-          //   show: true,
-          //   formatter: '{b}'
-          // }
-        },
-      ],
-    }
-    option && myChart.setOption(option)
   })
+}
+
+const draw_path = (graph: any, dom_id: string, title: string) => {
+  type EChartsOption = echarts.EChartsOption
+
+  const chartDom = document.getElementById(dom_id)!
+  const myChart = echarts.init(chartDom)
+  let option: EChartsOption;
+  interface GraphNode {
+    symbolSize: number;
+    label?: {
+      show?: boolean;
+    };
+  }
+  graph.nodes.forEach(function (node: GraphNode) {
+    node.label = {
+      show: node.symbolSize >= 20
+    };
+  });
+  option = {
+    title: {
+      text: title,
+      // textStyle: {
+      //   color: '#fff',
+      // },
+      // subtext: 'Default layout',
+      top: 'top',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: "item",
+      triggerOn: "mousemove",
+    },
+    legend: [
+      {
+        // selectedMode: 'single',
+        // textStyle: {
+        //   color: '#fff',
+        // },
+        top: 'bottom',
+        data: graph.categories.map(function (a: { name: string }) {
+          return a.name;
+        })
+      }
+    ],
+    darkMode: 'auto',
+    backgroundColor: '#f8f8f8',
+    series: [
+      {
+        type: "graph",
+        layout: "force",
+        data: graph.nodes,
+        links: graph.links,
+        categories: graph.categories,
+        roam: true,
+        edgeSymbol: ['none', 'arrow'],
+        edgeSymbolSize: [0, 10],
+        // 是否显示node的label
+        label: {
+          // show: true,
+          formatter: '{b}'
+        },
+        force: {
+          repulsion: 100,
+          edgeLength: 50,
+        },
+        lineStyle: {
+          color: 'source',
+          curveness: 0.3,
+          width: 3,
+        },
+        // 是否显示边label
+        // edgeLabel: {
+        //   show: true,
+        //   formatter: '{b}'
+        // }
+      },
+    ],
+  }
+  option && myChart.setOption(option)
 }
 
 let tracesList = ref([])
@@ -155,9 +176,23 @@ const get_spans_data = () => {
 </script>
 
 <style scoped>
+.route_graph {
+  left: 20px;
+  width: 90%;
+  display: inline-flex;
+  justify-content: space-between;
+}
 #graph {
-  width: 800px;
-  height: 800px;
+  width: 500px;
+  height: 500px;
+  margin: 0 20px;
+  /*background: pink;*/
+}
+
+#critical_path {
+  width: 500px;
+  height: 500px;
+  /*background: cadetblue;*/
 }
 
 .draw_graph_by_id {
