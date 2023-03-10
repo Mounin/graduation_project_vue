@@ -5,7 +5,7 @@
       <div class="header-search">
         <el-form :model="form" label-width="120px" style="display: inline-flex">
           <el-form-item label="服务名称">
-            <el-input v-model="form.name" />
+            <el-input v-model="form.name" style="width: 200px" />
           </el-form-item>
           <el-form-item label="开始时间">
             <el-date-picker
