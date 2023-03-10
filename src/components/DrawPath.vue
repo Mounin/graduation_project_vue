@@ -17,11 +17,12 @@
         <el-table :data="spansList" height="500" style="width: 100%; margin:0 20px">
           <el-table-column prop="span_id" label="SpanID" width="180" />
           <el-table-column prop="trace_id" label="TraceID" width="180" />
-          <el-table-column prop="parent_id" label="父点ID" width="180" />
+          <el-table-column prop="parent_id" label="父节点ID" width="180" />
           <el-table-column prop="operation_name" label="操作名称" width="180" />
           <el-table-column prop="ms_name" label="微服务名称" width="300" />
-          <el-table-column prop="duration" label="Trace持续时间" width="150" />
           <el-table-column prop="start_time" label="开始时间" width="200" />
+          <el-table-column prop="end_time" label="结束时间" width="200" />
+          <el-table-column prop="duration" label="Trace持续时间" width="150" />
         </el-table>
       </div>
     </el-tab-pane>
@@ -34,7 +35,9 @@
         <div id="graph"></div>
         <div id="critical_path"></div>
       </div>
-
+    </el-tab-pane>
+    <el-tab-pane label="查询" name="search" >
+<!--      <LoadAnimation />-->
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -45,10 +48,29 @@ import {onMounted, ref} from "vue";
 import type {TabsPaneContext} from "element-plus";
 import * as echarts from "echarts"
 import "echarts/theme/macarons";
+import LoadAnimation from './LoadAnimation.vue'
+import {ElLoading} from "element-plus";
+
+let activeName = ref('trace')
 
 onMounted(() => {
   get_traces_data()
+  get_spans_data()
 })
+
+const handleClick = (tab: TabsPaneContext) => {
+  if (tab.index === '3') {
+    const loading = ElLoading.service({
+      lock: true,
+      text: '正在查询中，请耐心等候！',
+      background: 'rgba(0, 0, 0, 0.7)',
+    })
+    jaeger.get_traces_and_spans().then(res => {
+      loading.close()
+      activeName.value = 'trace'
+    })
+  }
+}
 
 // 根据TraceID绘制有向无环图
 const traceID = ref()
@@ -56,15 +78,13 @@ const searchGraph = () => {
   jaeger.draw_path(traceID.value).then(res => {
     const graph_data = JSON.parse(res.graph_data)
     const critical_data = JSON.parse(res.critical_data)
-    console.log("graph_data", graph_data)
-    console.log("critical_data", critical_data)
-
     draw_path(graph_data, 'graph', "微服务路径DAG图")
     draw_path(critical_data, 'critical_path', "关键路径")
 
   })
 }
 
+// 绘图
 const draw_path = (graph: any, dom_id: string, title: string) => {
   type EChartsOption = echarts.EChartsOption
 
@@ -147,18 +167,11 @@ const draw_path = (graph: any, dom_id: string, title: string) => {
 
 let tracesList = ref([])
 let spansList = ref([])
-const activeName = ref('trace')
-const handleClick = (tab: TabsPaneContext) => {
-  if (tab.index === '0') {
-    get_traces_data()
-  } else if (tab.index === '1') {
-    get_spans_data()
-  }
-}
 
 // 获取traces数据
 const get_traces_data = () => {
   jaeger.get_traces().then(res => {
+    console.log(res.traces)
     tracesList.value = res.traces
   }).catch(e => {
     console.error(e)
@@ -168,6 +181,7 @@ const get_traces_data = () => {
 // 获取spans数据
 const get_spans_data = () => {
   jaeger.get_spans().then(res => {
+    console.log(res.spans)
     spansList.value = res.spans
   }).catch(e => {
     console.error(e)
