@@ -37,7 +37,6 @@
       </div>
     </el-tab-pane>
     <el-tab-pane label="查询" name="search" >
-<!--      <LoadAnimation />-->
     </el-tab-pane>
   </el-tabs>
 </template>

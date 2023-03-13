@@ -50,7 +50,40 @@ const jaeger = {
             } catch (error) {
                 console.error(error)
             }
-        }
+        },
+        async get_monitor() {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {}
+                }
+                const response = await service.get('get_monitor/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async get_resource() {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {}
+                }
+                const response = await service.get('get_resource/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        async get_hot_ms() {
+            try {
+                const config: AxiosRequestConfig = {
+                    params: {}
+                }
+                const response = await service.get('get_hot_ms/', config)
+                return response.data
+            } catch (error) {
+                console.error(error)
+            }
+        },
     }
 }
 
