@@ -9,14 +9,13 @@
       <div class="show-data">
         <el-table :data="filteredDataList" height="500" style="width: 100%">
           <el-table-column prop="ms_name" label="微服务名" />
-          <el-table-column prop="CPU_usage" label="CPU系统态利用率" />
-          <el-table-column prop="CPU_user" label="CPU用户态利用率" />
-          <el-table-column prop="memory_bandwidth_usage" label="内存带宽占用率" />
+          <el-table-column prop="CPU_usage" label="CPU利用率" />
+          <el-table-column prop="memory_bandwidth_usage" label="内存利用率" />
           <el-table-column prop="memory_usage" label="内存使用量" />
-          <el-table-column prop="disk_write" label="磁盘写入带宽占用率" />
-          <el-table-column prop="disk_read" label="磁盘读取带宽占用率" />
-          <el-table-column prop="net_write" label="网络写入带宽占用率" />
-          <el-table-column prop="net_read" label="网络读取带宽占用率" />
+          <el-table-column prop="disk_write" label="磁盘写入带宽" />
+          <el-table-column prop="disk_read" label="磁盘读取带宽" />
+          <el-table-column prop="net_write" label="网络写入带宽" />
+          <el-table-column prop="net_read" label="网络读取带宽" />
         </el-table>
       </div>
     </el-tab-pane>
@@ -46,8 +45,9 @@ onMounted(() => {
 // 获取所有数据
 function getAllData() {
   prom.showAllSingleMonitor().then(res => {
-    for (const item of res.list) {
-      monitorData.push(item.fields)
+    console.log(res)
+    for (const item of res) {
+      monitorData.push(item)
     }
     dataList.value = JSON.parse(JSON.stringify(monitorData))
   })

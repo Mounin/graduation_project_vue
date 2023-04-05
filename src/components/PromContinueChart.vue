@@ -9,6 +9,7 @@ import prom from '../api/prometheus_api'
 
 
 onMounted(() => {
+  console.log("进来了")
   type EChartsOption = echarts.EChartsOption;
 
   const chartDom = document.getElementById('myCharts')!
@@ -18,14 +19,13 @@ onMounted(() => {
 
   prom.showGraphContinueMonitor().then(res => {
     const titles: any[] = [
-        'CPU系统态利用率',
-        'CPU用户态利用率',
-        '内存带宽占用率',
+        'CPU利用率',
+        '内存利用率',
         '内存使用量',
-        '磁盘写入带宽占用率',
-        '磁盘读取带宽占用率',
-        '网络写入带宽占用率',
-        '网络读取带宽占用率',
+        '磁盘写入带宽',
+        '磁盘读取带宽',
+        '网络写入带宽',
+        '网络读取带宽',
     ]
     const dataAll: any[][] = []
     const nameList: any[] = []
@@ -100,25 +100,19 @@ onMounted(() => {
           top:'75%',
           textAlign:'center'
         },
-        {
-          text:titles[7],
-          left:'73%',
-          top:'75%',
-          textAlign:'center'
-        }
       ],
       tooltip: {
         trigger: 'axis'
       },
       grid: [
         { left: '7%', top: '7%', width: '38%', height: '15%', containLabel: true },
-        { left: '7%', top: '30%', width: '38%', height: '15%', containLabel: true },
         { right: '7%', top: '7%', width: '38%', height: '15%', containLabel: true },
+        { left: '7%', top: '30%', width: '38%', height: '15%', containLabel: true },
         { right: '7%', top: '30%', width: '38%', height: '15%', containLabel: true },
-        { left: '7%', bottom: '7%', width: '38%', height: '15%', containLabel: true },
         { left: '7%', bottom: '30%', width: '38%', height: '15%', containLabel: true },
-        { right: '7%', bottom: '7%', width: '38%', height: '15%', containLabel: true },
-        { right: '7%', bottom: '30%', width: '38%', height: '15%', containLabel: true }
+        { right: '7%', bottom: '30%', width: '38%', height: '15%', containLabel: true },
+        { left: '7%', bottom: '7%', width: '38%', height: '15%', containLabel: true },
+        // { right: '7%', bottom: '7%', width: '38%', height: '15%', containLabel: true }
       ],
       // 工具栏（下载等）
       toolbox: {
@@ -134,7 +128,7 @@ onMounted(() => {
         {gridIndex: 4, type: 'category', boundaryGap: false, data: xAxisData[0] },
         {gridIndex: 5, type: 'category', boundaryGap: false, data: xAxisData[0] },
         {gridIndex: 6, type: 'category', boundaryGap: false, data: xAxisData[0] },
-        {gridIndex: 7, type: 'category', boundaryGap: false, data: xAxisData[0] },
+        // {gridIndex: 7, type: 'category', boundaryGap: false, data: xAxisData[0] },
       ],
       yAxis: [
         {gridIndex: 0, type: 'value', boundaryGap: false },
@@ -144,7 +138,7 @@ onMounted(() => {
         {gridIndex: 4, type: 'value', boundaryGap: false },
         {gridIndex: 5, type: 'value', boundaryGap: false },
         {gridIndex: 6, type: 'value', boundaryGap: false },
-        {gridIndex: 7, type: 'value', boundaryGap: false },
+        // {gridIndex: 7, type: 'value', boundaryGap: false },
       ],
       series: series
     };

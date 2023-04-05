@@ -14,14 +14,13 @@
                     <p m="t-0 b-2">持续时长: {{ propss.row.duration }}</p>
                     <h3>监控指标</h3>
                     <el-table :data="propss.row.resourceData">
-                      <el-table-column prop="CPU_usage" label="CPU系统态利用率" />
-                      <el-table-column prop="CPU_user" label="CPU用户态利用率" />
-                      <el-table-column prop="memory_bandwidth_usage" label="内存带宽占用率" />
+                      <el-table-column prop="CPU_usage" label="CPU利用率" />
+                      <el-table-column prop="memory_bandwidth_usage" label="内存利用率" />
                       <el-table-column prop="memory_usage" label="内存使用量" />
-                      <el-table-column prop="disk_write" label="磁盘写入带宽占用率" />
-                      <el-table-column prop="disk_read" label="磁盘读取带宽占用率" />
-                      <el-table-column prop="net_write" label="网络写入带宽占用率" />
-                      <el-table-column prop="net_read" label="网络读取带宽占用率" />
+                      <el-table-column prop="disk_write" label="磁盘写入带宽" />
+                      <el-table-column prop="disk_read" label="磁盘读取带宽" />
+                      <el-table-column prop="net_write" label="网络写入带宽" />
+                      <el-table-column prop="net_read" label="网络读取带宽" />
                     </el-table>
                   </div>
                 </template>
@@ -93,6 +92,7 @@ const handleClick = (tab: TabsPaneContext) => {
 const tracesData = ref([])
 const getResource = () => {
   jaeger.get_resource().then(res => {
+    // console.log(res)
     console.log("tracesData", JSON.parse(res.tracesData))
     tracesData.value = JSON.parse(res.tracesData)
   }).catch(e => {
