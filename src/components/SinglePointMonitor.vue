@@ -1,28 +1,27 @@
 <!-- 单点监控页面 -->
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="指标查询" name="data">
-      <div class="header-search">
-        <el-input style="width: 90%" v-model="input" placeholder="请输入查询的微服务名称" clearable />
-        <el-button type="primary" @click="headerMonitor">监控</el-button>
-      </div>
-      <div class="show-data">
-        <el-table :data="filteredDataList" height="500" style="width: 100%">
-          <el-table-column prop="ms_name" label="微服务名" />
-          <el-table-column prop="CPU_usage" label="CPU利用率" />
-          <el-table-column prop="memory_bandwidth_usage" label="内存利用率" />
-          <el-table-column prop="memory_usage" label="内存使用量" />
-          <el-table-column prop="disk_write" label="磁盘写入带宽" />
-          <el-table-column prop="disk_read" label="磁盘读取带宽" />
-          <el-table-column prop="net_write" label="网络写入带宽" />
-          <el-table-column prop="net_read" label="网络读取带宽" />
-        </el-table>
-      </div>
-    </el-tab-pane>
-<!--    <el-tab-pane label="Graph展示" name="graph">-->
-<!--      Graph展示-->
-<!--    </el-tab-pane>-->
-  </el-tabs>
+  <div class="single-body">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="指标查询" name="data">
+        <div class="header-search">
+          <el-input style="width: 90%" v-model="input" placeholder="请输入查询的微服务名称" clearable />
+          <el-button type="primary" @click="headerMonitor">监控</el-button>
+        </div>
+        <div class="show-data">
+          <el-table :data="filteredDataList" height="500" style="width: 100%">
+            <el-table-column prop="ms_name" label="微服务名" />
+            <el-table-column prop="CPU_usage" label="CPU利用率" />
+            <el-table-column prop="memory_bandwidth_usage" label="内存利用率" />
+            <el-table-column prop="memory_usage" label="内存使用量" />
+            <el-table-column prop="disk_write" label="磁盘写入带宽" />
+            <el-table-column prop="disk_read" label="磁盘读取带宽" />
+            <el-table-column prop="net_write" label="网络写入带宽" />
+            <el-table-column prop="net_read" label="网络读取带宽" />
+          </el-table>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -68,12 +67,23 @@ function headerMonitor() {
   })
 }
 </script>
-<style>
-  .header-search {
-    display: inline-flex;
-    padding: 10px;
-    width: 95%;
-    justify-content: space-between;
+<style lang="less">
+.single-body {
+  .el-tabs {
+    .el-tab-pane {
+    }
+    .header-search {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      background-color: white;
+    }
+
+    .show-data {
+      margin-top: 10px;
+    }
   }
+}
+
 
 </style>

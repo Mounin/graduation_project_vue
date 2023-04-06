@@ -91,9 +91,11 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 
 <style>
 .header-search {
-  display: inline-flex;
+  display: flex;
   padding: 10px;
-  width: 95%;
+  width: 100%;
   justify-content: space-between;
+  background-color: white;
+  margin-bottom: 10px;
 }
 </style>

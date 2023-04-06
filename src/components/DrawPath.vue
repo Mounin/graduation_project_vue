@@ -3,7 +3,7 @@
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="Trace" name="trace">
       <div class="show-traces-data">
-        <el-table :data="tracesList" height="500" style="width: 100%; left: 20px">
+        <el-table :data="tracesList" height="500">
           <el-table-column prop="trace_id" label="TraceID" width="180" />
           <el-table-column prop="span_number" label="span数量" width="150" />
           <el-table-column prop="root_ms_name" label="根微服务名称" width="300" />
@@ -14,7 +14,7 @@
     </el-tab-pane>
     <el-tab-pane label="Span" name="data">
       <div class="show-spans-data">
-        <el-table :data="spansList" height="500" style="width: 100%; margin:0 20px">
+        <el-table :data="spansList" height="500">
           <el-table-column prop="span_id" label="SpanID" width="180" />
           <el-table-column prop="trace_id" label="TraceID" width="180" />
           <el-table-column prop="parent_id" label="父节点ID" width="180" />
@@ -29,7 +29,7 @@
     <el-tab-pane label="路径图展示" name="graph">
       <div class="draw_graph_by_id">
         <el-input v-model="traceID" style="width: 90%" placeholder="请输入trace id" clearable />
-        <el-button type="primary" @click="searchGraph">查询</el-button>
+        <el-button type="primary" @click="searchGraph" style="margin-right: 20px">查询</el-button>
       </div>
       <div class="route_graph">
         <div id="graph"></div>
@@ -209,9 +209,10 @@ const get_spans_data = () => {
 }
 
 .draw_graph_by_id {
-  display: inline-flex;
+  display: flex;
   padding: 10px;
-  width: 95%;
+  width: 100%;
   justify-content: space-between;
+  background-color: white;
 }
 </style>

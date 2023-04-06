@@ -2,7 +2,7 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="资源监控" name="resource">
-      <el-table :data="tracesData" style="width: 100%">
+      <el-table :data="tracesData" height="500" style="width: 100%">
         <el-table-column type="expand">
           <template #default="props">
             <el-table :data="props.row.spansData" style="left: 20px">
