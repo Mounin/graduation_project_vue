@@ -43,9 +43,7 @@
             /></el-icon>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>View</el-dropdown-item>
-                <el-dropdown-item>Add</el-dropdown-item>
-                <el-dropdown-item>Delete</el-dropdown-item>
+                <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -86,6 +84,7 @@ import SinglePointMonitor from '../components/SinglePointMonitor.vue'
 import ContinuousMonitor from '../components/ContinuousMonitor.vue'
 import DrawPath from '../components/DrawPath.vue'
 import ResourceMonitor from '../components/ResourceMonitor.vue'
+import router from "@/router";
 
 // 侧边栏选项卡
 let showContent = ref("singlePointMonitor")
@@ -100,6 +99,10 @@ function drawPath() {
 }
 function resourceMonitor() {
   showContent.value = "resourceMonitor";
+}
+
+const logout = () => {
+  router.push('/login')
 }
 </script>
 
