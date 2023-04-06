@@ -7,6 +7,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: '/login'  // 将根路由重定向到登录页
+    },
+    {
+      path: '/login',
       name: 'login',
       component: LoginView
     },
